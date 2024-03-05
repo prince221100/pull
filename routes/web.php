@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('login');
 });
+
 Route::post('/login',[UserController::class,'login'])->name('login');
 Route::get('/dashboard',[UserController::class,'dashboard'])->name('dashboard');
 
@@ -48,8 +49,8 @@ Route::get('/delete-employee/{id}',[UserController::class,'delete_employee']);
 Route::get('/edit-employee/{id}',[UserController::class,'edit_employee']);
 Route::put('/edit_employeedata/{id}',[UserController::class,'edit_employeedata'])->name('edit_employeedata');
 
+// Download CSV:-
+Route::get('/generate-csv',[UserController::class,'generate_csv'])->name('generate.csv');
 
-// mail:-
-Route::get('/mail',function(){
-    return view('reset-mail');
-});
+// pdf send in email:-
+Route::get('/pdf', [UserController::class, 'send_email_pdf']);

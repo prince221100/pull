@@ -11,17 +11,18 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class registermail extends Mailable
+class MailExample extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public $user;
-    public function __construct($user)
+    public $mailData;
+
+    public function __construct($mailData)
     {
-        $this->user =$user;
+        $this->mailData = $mailData;
     }
 
     /**
@@ -30,7 +31,7 @@ class registermail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Login Information ',
+            subject: $this->mailData['title'],
         );
     }
 
@@ -40,7 +41,8 @@ class registermail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail',
+            view: 'myTestMail',
+            with: $this->mailData
         );
     }
 
@@ -52,9 +54,8 @@ class registermail extends Mailable
     public function attachments(): array
     {
         return [
-            MailablesAttachment::fromData(fn () => $this->user['pdf']->output(), 'companydetails.pdf')
+            MailablesAttachment::fromData(fn () => $this->mailData['pdf']->output(), 'Report.pdf')
             ->withMime('application/pdf'),
-
         ];
     }
 }

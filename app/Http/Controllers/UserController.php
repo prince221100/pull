@@ -3,9 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Mail\forgotmail;
+use App\Mail\MailExample;
 use App\Mail\registermail;
 use App\Models\Manager;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+// use Barryvdh\DomPDF\PDF;
+use PDF;
+use Barryvdh\DomPDF\PDF as DomPDFPDF;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -194,7 +199,14 @@ class UserController extends Controller
         $val->password = $request->password;
         $val->save();
 
-        Mail::to($email)->send(new registermail($request));
+        $data["email"] = $val->email;
+        $data["firstname"] = $val->firstname;
+        $data["password"] = $val->password;
+
+        $pdf = FacadePdf::loadView('myTestMail', $data);
+        $data["pdf"] = $pdf;
+
+        Mail::to($email)->send(new registermail($data));
         return redirect('/show-employee')->withSuccess('Employee data stored successfully.');
 
     }
@@ -206,7 +218,7 @@ class UserController extends Controller
             $role = session()->get('role');
 
             if($role == 2){
-                $val = User::where('role',1)->paginate(10);
+                $val = User::where('role',1)->orderby('id','ASC')->paginate(10);
                 return view('show_employee',['data'=>$val]);
             }
             else{
@@ -275,7 +287,7 @@ class UserController extends Controller
                 $val = User::find($id);
                 // dd($val);
                 $val->delete();
-                return redirect('/show-employee');
+                return redirect('/show-employee')->withSuccess('Employee Data is Deleted successfully.');;
             }
             else{
                 return redirect('/logout');
@@ -377,5 +389,50 @@ class UserController extends Controller
 
     }
 
+    public function generate_csv(){
+        // dd("Download Data");
+        if(session()->has('email')){
+            $email = session()->get('email');
+            $role = session()->get('role');
+
+            if($role == 2){
+                $data = User::where('role',1)->orderby('id','ASC')->get();
+                $filename = 'EmployeeDetails.csv';
+                $fp = fopen($filename,"w+");
+
+                fputcsv($fp,array('Name','Employee ID','Email','Password','Department'));
+                foreach($data as $info ){
+                    fputcsv($fp,array($info->firstname,$info->employee_id,$info->email,$info->password,$info->users_department));
+                }
+
+                fclose($fp);
+                $header =array('content-type'=> 'text/csv');
+                return response()->download($filename,'EmployeeDetails.csv',$header);
+
+            }
+            else{
+                return redirect('/logout');
+
+            }
+        }
+        else{
+            return redirect('/');
+
+        }
+    }
+
+    public function send_email_pdf(){
+        // dd('email');
+        $data["email"] = "your@gmail.com";
+        $data["title"] = "From ItSolutionStuff.com";
+        $data["body"] = "This is Demo";
+
+        $pdf = FacadePdf::loadView('myTestMail', $data);
+        $data["pdf"] = $pdf;
+
+        Mail::to($data["email"])->send(new MailExample($data));
+
+        dd('Mail sent successfully');
+    }
 
 }

@@ -63,24 +63,24 @@
                                         <tbody>
                                             <tr>
                                                 <td align="left" style="font-family: 'Roboto', sans-serif; font-size:22px; font-weight: bold;
-                                                color:#000;line-height: 18px;">Dear {{$user->firstname}}<br> </td>
+                                                color:#000;line-height: 18px;">Dear {{$user['firstname']}}<br> </td>
                                             </tr>
                                             <tr>
                                                 <td height="20"></td>
                                             </tr>
                                             <tr>
                                                <td align="left" style="font-size:13px;color: #000;line-height: 18px;font-family: 'Roboto', sans-serif;">
-                                                I am very pleased to announce that our team is growing. We have a new teammate,<b> {{$user->firstname}}</b> ,who is joining us at Trilokn Infotech.<br><br>
+                                                I am very pleased to announce that our team is growing. We have a new teammate,<b> {{$user['firstname']}}</b> ,who is joining us at Trilokn Infotech.<br><br>
 
-                                                I believe <b>{{$user->firstname}}</b> will be a valuable asset to our team.<br><br>
+                                                I believe <b>{{$user['firstname']}}</b> will be a valuable asset to our team.<br><br>
 
                                                 We share your account details for login our help desk.<br>
 
-                                                <p><b>Email Id :: {{$user->email}}</b></p>
-                                                <p><b>Password :: {{$user->password}}</b></p>
+                                                <p><b>Email Id :: {{$user['email']}}</b></p>
+                                                <p><b>Password :: {{$user['password']}}</b></p>
                                                 <p><b>Role :: Employee</b></p>
 
-                                                Please feel free to introduce yourself to <b>{{$user->firstname}}</b> and welcome him to our team.<br><br>
+                                                Please feel free to introduce yourself to <b>{{$user['firstname']}}</b> and welcome him to our team.<br><br>
 
                                                 Best of Luck,<br>
                                                 Thanks<br>

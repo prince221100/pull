@@ -21,14 +21,17 @@
 
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
-            {{-- <div class="card-header py-3">
+            <div class="card-header py-3">
                 <div class="row">
-                    <div >
+                    {{-- <div >
                         <h6 class="m-0 font-weight-bold text-primary">Employees</h6>
+                    </div> --}}
+                    <div class="col-md-12 " style="text-align: right" >
+                        <a class="btn btn-primary btn-md" style="background: #0f9721" href="{{Route('generate.csv')}}">Download CSV</a>
                     </div>
 
                 </div>
-            </div> --}}
+            </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">

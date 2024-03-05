@@ -11,6 +11,7 @@
 
     <title>Help Desk</title>
 
+    <link rel="shortcut icon" type="image/png" href="../admin/img/Trilokn_Logo.png" />
     <!-- Custom fonts for this template-->
     <link href="../admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
