@@ -29,7 +29,6 @@ class UserController extends Controller
             'email' => 'required',
             'password' => 'required',
         ]);
-        // dd($request->all());
         // echo $request->role,$request->email,$request->password;
         $chk = User::where(['email'=>$request->email,'password'=>$request->password,'role'=>$request->role])->exists();
         // dd($chk);
