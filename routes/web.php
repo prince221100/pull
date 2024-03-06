@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RuleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,3 +55,12 @@ Route::get('/generate-csv',[UserController::class,'generate_csv'])->name('genera
 
 // pdf send in email:-
 Route::get('/pdf', [UserController::class, 'send_email_pdf']);
+
+
+//rules
+Route::get('rules', [RuleController::class, 'index'])->name('rules.list');
+Route::get('rules/add', [RuleController::class, 'create'])->name('rules.add');
+Route::post('rules/store', [RuleController::class, 'store'])->name('rules.store');
+Route::get('rules/edit/{id}', [RuleController::class, 'edit'])->name('rules.edit');
+Route::post('rules/update/{id}', [RuleController::class, 'update'])->name('rules.update');
+Route::get('rules/delete/{id}', [RuleController::class, 'destroy'])->name('rules.delete');
