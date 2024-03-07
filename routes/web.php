@@ -3,6 +3,7 @@
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RuleController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,15 +16,16 @@ use App\Http\Controllers\RuleController;
 |
 */
 
-Route::get('/', function () {
-    return view('login');
-});
 
-Route::post('/login',[UserController::class,'login'])->name('login');
+Route::get('/', function () {
+    return view('auth/login');
+})->name('logindata');
+
+// Route::post('/login',[UserController::class,'login'])->name('login');
+
 Route::get('/dashboard',[UserController::class,'dashboard'])->name('dashboard');
 
-Route::get('/logout',[UserController::class,'logout'])->name('logout');
-
+Route::get('/logoutinfo',[UserController::class,'logout'])->name('logoutinfo');
 // Forgot password :-
 
 Route::get('/forgot-password',[UserController::class,'forgotpassword'])->name('forgot_password');
@@ -64,3 +66,8 @@ Route::post('rules/store', [RuleController::class, 'store'])->name('rules.store'
 Route::get('rules/edit/{id}', [RuleController::class, 'edit'])->name('rules.edit');
 Route::post('rules/update/{id}', [RuleController::class, 'update'])->name('rules.update');
 Route::get('rules/delete/{id}', [RuleController::class, 'destroy'])->name('rules.delete');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+

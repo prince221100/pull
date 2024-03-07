@@ -77,7 +77,7 @@
                                                 We share your account details for login our help desk.<br>
 
                                                 <p><b>Email Id :: {{$user['email']}}</b></p>
-                                                <p><b>Password :: {{$user['password']}}</b></p>
+                                                {{-- <p><b>Password :: {{$user['password']}}</b></p> --}}
                                                 <p><b>Role :: Employee</b></p>
 
                                                 Please feel free to introduce yourself to <b>{{$user['firstname']}}</b> and welcome him to our team.<br><br>
@@ -97,8 +97,8 @@
                                                         <tbody>
                                                             <tr>
                                                                 <td>
-                                                                    <a href="{{url('/')}}" style="color: #fff;text-decoration: none;background: #433185;width: 110px;height: 30px;display: inline-block;font-size: 15px;text-align: center;line-height: 30px;font-family: 'Roboto', sans-serif; display: table-cell;    vertical-align: middle; ">
-                                                                        Login <span style="padding-left: 4px;"><img src="https://www.appgurus.com.au/wp-content/uploads/2021/10/arrow-right.png" style="height: 10px; width: 10px;"  alt=""></span></a>
+                                                                    <a href="{{url('/forgot-password')}}" style="color: #fff;text-decoration: none;background: #433185;width: 110px;height: 30px;display: inline-block;font-size: 15px;text-align: center;line-height: 30px;font-family: 'Roboto', sans-serif; display: table-cell;    vertical-align: middle; ">
+                                                                        forgot password <span style="padding-left: 4px;"><img src="https://www.appgurus.com.au/wp-content/uploads/2021/10/arrow-right.png" style="height: 10px; width: 10px;"  alt=""></span></a>
                                                                 </td>
                                                                 <td width="15"></td>
                                                                 {{-- <td>

@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('tickets', function (Blueprint $table) {
-            $table->integer('department_id')->unsigned();
+            // $table->integer('department_id')->unsigned();
             // $table->string('ques_message')->nullable();
             // $table->string('ans_message')->nullable();
             // $table->enum('prority',['high','mid','low']);
-            // $table->enum('status',['active','inactive','inprogress']);  
+            // $table->enum('status',['active','inactive','inprogress']);
             // $table->foreign('issue_id')->references('id')->on('ticket_issues')->onDelete('cascade');
         });
     }

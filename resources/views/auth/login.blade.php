@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Forgot Password</title>
+    <title>Login</title>
     <link rel="shortcut icon" type="image/png" href="../admin/img/Trilokn_Logo.png" />
 
     <!-- Custom fonts for this template-->
@@ -22,6 +22,8 @@
     <link href="admin/css/sb-admin-2.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
+
+
 </head>
 
 <body class="bg-gradient-primary">
@@ -31,30 +33,38 @@
         <!-- Outer Row -->
         <div class="row justify-content-center">
 
-            <div class="col-xl-10 col-lg-12 col-md-9" style="margin: 200px;">
+            <div class="col-xl-10 col-lg-12 col-md-9" style="margin:200px;">
 
                 <div class="card o-hidden border-0 shadow-lg my-5">
-                    <div class="card-body p-0" >
+                    <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            {{-- <div class="col-lg-6 d-none d-lg-block bg-password-image"></div> --}}
-                        {{-- <div class="col-lg-3"></div> --}}
-                        <div class="col-lg-6 ">
-                            <img src="admin/img/Trilokn_Logo.png" height="100%" width="100%"></img>
-                        </div>
+                            <div class="col-lg-6 ">
+                                <img src="admin/img/Trilokn_Logo.png" height="100%" width="100%"></img>
+                            </div>
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-2">Forgot password</h1>
-                                        <p class="mb-4">Just enter your email address below
-                                            and we'll send you a link to reset your password!</p>
+                                        <h1 class="h4 text-gray-900 mb-4">Login</h1>
                                     </div>
-                                    <form action="{{Route('forgot')}}" method="POST">
+                                    <form class="user" action="{{Route('login')}}" method="POST">
                                         @csrf
+                                        <div class="form-group">
+                                            <select name="role" class="form-control form-control">
+                                                <option value="" disabled selected >Choose a Role</option>
+                                                <option value="1">Employee</option>
+                                                <option value="2">IT admin</option>
+                                                <option value="3">Manager</option>
+                                            </select>
+                                        </div>
                                         <div class="form-group">
                                             <input type="email" class="form-control form-control"
                                                 id="exampleInputEmail" aria-describedby="emailHelp"
                                                 placeholder="Enter Email Address..." name="email">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" class="form-control form-control"
+                                                id="exampleInputPassword" placeholder="Password" name="password">
                                         </div>
                                         @if ($errors->any())
                                             @foreach ($errors->all() as $error)
@@ -62,21 +72,28 @@
                                             @endforeach
                                         @endif
                                         @if (session('success'))
-                                            <div class="alert alert-success" id='alert'>
-                                                <span style="color: green">{{ session('success') }}</span>
-                                            </div>
-                                        @endif
-                                        <button type="submit" class="btn btn-primary btn-user btn-block " style="background: #433185">
-                                            Reset Password
+                                        <div class="alert alert-success" id="alert">
+                                            <span style="color: green">{{ session('success') }}</span>
+                                        </div>
+                                    @endif
+                                        <button class="btn btn-primary btn-user btn-block"  style="background: #433185" type="submit">
+                                            Login
                                         </button>
+                                        {{-- <hr> --}}
+                                        {{-- <a href="index.html" class="btn btn-google btn-user btn-block">
+                                            <i class="fab fa-google fa-fw"></i> Login with Google
+                                        </a>
+                                        <a href="index.html" class="btn btn-facebook btn-user btn-block">
+                                            <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
+                                        </a> --}}
                                     </form>
                                     <hr>
+                                    <div class="text-center">
+                                        <a href="{{Route('forgot_password')}}">Forgot Password?</a>
+                                    </div>
                                     {{-- <div class="text-center">
                                         <a class="small" href="register.html">Create an Account!</a>
                                     </div> --}}
-                                    <div class="text-center">
-                                        Are you have password ? <a  href="/" >back</a>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -96,14 +113,14 @@
         });
     </script>
     <!-- Bootstrap core JavaScript-->
-    <script src="admin/vendor/jquery/jquery.min.js"></script>
-    <script src="admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="admin/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="admin/js/sb-admin-2.min.js"></script>
+    <script src="js/sb-admin-2.min.js"></script>
 
 </body>
 

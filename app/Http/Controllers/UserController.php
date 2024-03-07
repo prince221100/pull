@@ -13,8 +13,11 @@ use PDF;
 use Barryvdh\DomPDF\PDF as DomPDFPDF;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
@@ -22,31 +25,33 @@ use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
-    public function login(Request $request){
-        // dd($request->all());
-        $request->validate([
-            'role' => 'required',
-            'email' => 'required',
-            'password' => 'required',
-        ]);
-        // echo $request->role,$request->email,$request->password;
-        $chk = User::where(['email'=>$request->email,'password'=>$request->password,'role'=>$request->role])->exists();
-        // dd($chk);
-        if($chk == null){
-            echo "Data is not match";
-            return redirect('/')->withErrors('Data is not match');
-        }else{
-            echo "Login Successfully and go to dashboard";
-            $name = User::where('email',$request->email)->first();
-            // dd($name->firstname);
-            session(['email'=>$request->email,'role'=>$request->role,'name'=>$name->firstname]);
-            return redirect('/dashboard');
-        }
+    // public function login(Request $request){
+    //     // dd($request->all());
+    //     $request->validate([
+    //         'role' => 'required',
+    //         'email' => 'required',
+    //         'password' => 'required',
+    //     ]);
 
-    }
+    //     // echo $request->role,$request->email,$request->password;
+    //     $chk = User::where(['email'=>$request->email,'password'=>$request->password,'role'=>$request->role])->exists();
+    //     // dd($chk);
+    //     if($chk == null){
+    //         echo "Data is not match";
+    //         return redirect('/')->withErrors('Data is not match');
+    //     }else{
+    //         echo "Login Successfully and go to dashboard";
+    //         // $name = User::where('email',$request->email)->first();
+    //         // // dd($name->firstname);
+    //         // session(['email'=>$request->email,'role'=>$request->role,'name'=>$name->firstname]);
+    //         return redirect('/dashboard');
+    //     }
+
+    // }
     public function dashboard(){
-        // $role = 3;
-        if(session()->has('email')){
+
+        // dd(Auth::user());
+        if(Auth::user()){
             return view('homepage');
         }else{
             return redirect('/');
@@ -55,7 +60,9 @@ class UserController extends Controller
     }
 
     public function logout(Request $request){
-        $request->session()->flush();
+        // $request->session()->flush();
+        // Session::flush();
+        Auth::logout();
         return redirect('/');
     }
 
@@ -130,9 +137,12 @@ class UserController extends Controller
             $pass= $request->password;
             $pass1= $request->confirmpassword;
             $email = $val->email;
+            // dd($pass,$pass1);
             if($pass == $pass1){
+                $passreal = hash::make($pass);
+                // dd($passreal);
                 // echo "Password is match";
-                $upd = User::where('email',$email)->update(['password'=> $pass]);
+                $upd = User::where('email',$email)->update(['password'=> $passreal]);
 
                 DB::table('password_reset_tokens')->where('email',$email)->delete();
 
@@ -148,10 +158,8 @@ class UserController extends Controller
     }
 
     public function add_employee(){
-        if(session()->has('email')){
-            $email = session()->get('email');
-            $role = session()->get('role');
-            if($role == 2){
+        if(Auth::user()){
+            if(Auth::user()->role == 2){
                 $val = Manager::all();
                 // dd($val);
                 return view('addemployee',['manager'=>$val]);
@@ -195,7 +203,7 @@ class UserController extends Controller
         $val->role = 1;
         $val->manager_id =$managerid;
         $val->users_department = $department_name;
-        $val->password = $request->password;
+        $val->password = hash::make($request->password);
         $val->save();
 
         $data["email"] = $val->email;
@@ -212,16 +220,14 @@ class UserController extends Controller
 
     public function show_employee(){
 
-        if(session()->has('email')){
-            $email = session()->get('email');
-            $role = session()->get('role');
+        if(Auth::user()){
 
-            if($role == 2){
+            if(Auth::user()->role == 2){
                 $val = User::where('role',1)->orderby('id','ASC')->paginate(10);
                 return view('show_employee',['data'=>$val]);
             }
             else{
-                return redirect('/');
+                return redirect('/logoutinfo');
             }
 
         }else{
@@ -231,9 +237,10 @@ class UserController extends Controller
 
 
     public function profile(){
-        if(session()->has('email')){
-            $role = session()->get('role');
-            $email = session()->get('email');
+        if(Auth::user()){
+
+            $email = Auth::user()->email;
+            // dd($email);
             $val = User::where('email',$email)->first();
             return view('profile',['val'=>$val]);
 
@@ -247,49 +254,44 @@ class UserController extends Controller
         $request->validate([
             'firstname'=>'required',
             'lastname' => 'required',
-            'password'=>'required'
+
 
         ]);
-        $email = session()->get('email');
+        $email = Auth::user()->email;
         // $email = "xyz@gmail.com";
         // dd($email);
         $chk = User::where('email',$email)->first();
         if($chk){
             // dd($chk->id);
-            $data = User::where(['firstname'=>$request->firstname,'lastname'=>$request->lastname,'password'=>$request->password])->first();
+            $data = User::where(['firstname'=>$request->firstname,'lastname'=>$request->lastname])->first();
             // dd($data);
             if($data){
                 return redirect('/profile')->withErrors('Please check your information.');
 
             }else{
-
                 $val = User::find($chk->id);
                 $val->firstname = $request->firstname;
                 $val->lastname = $request->lastname;
-                $val->password = $request->password;
                 $val->save();
 
                 return redirect('/profile')->withSuccess('Profile is updated successfully.');
             }
         }else{
-            return redirect('/logout');
+            return redirect('/logoutinfo');
         }
 
     }
     public function delete_employee($id){
         // dd($id);
-        if(session()->has('email')){
-            $email = session()->get('email');
-            $role = session()->get('role');
-
-            if($role == 2){
+        if(Auth::user()){
+            if(Auth::user()->role == 2){
                 $val = User::find($id);
                 // dd($val);
                 $val->delete();
                 return redirect('/show-employee')->withSuccess('Employee Data is Deleted successfully.');;
             }
             else{
-                return redirect('/logout');
+                return redirect('/logoutinfo');
             }
         }else{
             return redirect('/');
@@ -297,11 +299,8 @@ class UserController extends Controller
     }
     public function edit_employee($id){
         // dd($id);
-        if(session()->has('email')){
-            $email = session()->get('email');
-            $role = session()->get('role');
-
-            if($role == 2){
+        if(Auth::user()){
+            if(Auth::user()->role == 2){
                 $man = Manager::all();
 
                 $val = User::where('id',$id)->first();
@@ -309,7 +308,7 @@ class UserController extends Controller
                 return view('edit_employee',['val'=>$val,'manager'=>$man]);
             }
             else{
-                return redirect('/logout');
+                return redirect('/logoutinfo');
 
             }
         }
@@ -319,6 +318,7 @@ class UserController extends Controller
         }
 
     }
+
     public function edit_employeedata(Request $request,$id){
         // dd($request->all(),$id);
         $request->validate([
@@ -327,7 +327,7 @@ class UserController extends Controller
             'lastname' => 'required',
             'email'=>'required|email',
             'managerid' => 'required',
-            'password'=>'required',
+
             'department_name' => 'required',
 
         ]);
@@ -337,7 +337,7 @@ class UserController extends Controller
         // dd($chk->email);
         if($email == $chk->email){
             // dd('email is same');
-            $chk_data = User::where(['employee_id'=>$request->employeeid,'firstname'=>$request->firstname,'lastname'=>$request->lastname,'email'=>$request->email,'password'=>$request->password,'users_department'=>$request->department_name,'manager_id'=>$request->managerid])->first();
+            $chk_data = User::where(['employee_id'=>$request->employeeid,'firstname'=>$request->firstname,'lastname'=>$request->lastname,'email'=>$request->email,'users_department'=>$request->department_name,'manager_id'=>$request->managerid])->first();
             // dd($chk_data);
             if($chk_data){
                 return redirect('/show-employee')->withSuccess('Employee Data is not updated because you enter same data.');
@@ -352,7 +352,7 @@ class UserController extends Controller
                                 $val->manager_id =$request->managerid;
                             }
                             $val->users_department = $request->department_name;
-                            $val->password = $request->password;
+
 
                             $val->save();
                             return redirect('/show-employee')->withSuccess('Employee Data is updated successfully.');
@@ -378,7 +378,6 @@ class UserController extends Controller
                     $val->manager_id =$request->managerid;
                 }
                 $val->users_department = $request->department_name;
-                $val->password = $request->password;
                 $val->save();
                 return redirect('/show-employee')->withSuccess('Employee Data is updated successfully.');
 
@@ -388,20 +387,18 @@ class UserController extends Controller
 
     }
 
+
     public function generate_csv(){
         // dd("Download Data");
-        if(session()->has('email')){
-            $email = session()->get('email');
-            $role = session()->get('role');
-
-            if($role == 2){
+        if(Auth::user()){
+            if(Auth::user()->role == 2){
                 $data = User::where('role',1)->orderby('id','ASC')->get();
                 $filename = 'EmployeeDetails.csv';
                 $fp = fopen($filename,"w+");
 
-                fputcsv($fp,array('Name','Employee ID','Email','Password','Department'));
+                fputcsv($fp,array('Name','Employee ID','Email','Department'));
                 foreach($data as $info ){
-                    fputcsv($fp,array($info->firstname,$info->employee_id,$info->email,$info->password,$info->users_department));
+                    fputcsv($fp,array($info->firstname,$info->employee_id,$info->email,$info->users_department));
                 }
 
                 fclose($fp);
@@ -410,7 +407,7 @@ class UserController extends Controller
 
             }
             else{
-                return redirect('/logout');
+                return redirect('/logoutinfo');
 
             }
         }
@@ -418,20 +415,6 @@ class UserController extends Controller
             return redirect('/');
 
         }
-    }
-
-    public function send_email_pdf(){
-        // dd('email');
-        $data["email"] = "your@gmail.com";
-        $data["title"] = "From ItSolutionStuff.com";
-        $data["body"] = "This is Demo";
-
-        $pdf = FacadePdf::loadView('myTestMail', $data);
-        $data["pdf"] = $pdf;
-
-        Mail::to($data["email"])->send(new MailExample($data));
-
-        dd('Mail sent successfully');
     }
 
 }

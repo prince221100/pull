@@ -62,17 +62,36 @@
                         </div>
 
                       </div>
-                      <div class="col-md-6 mb-4 pb-2">
+                      {{-- <div class="col-md-6 mb-4 pb-2">
 
                         <div class="form-outline">
                             <label class="form-label" for="phoneNumber">Password</label>
                           <input type="text" id="phoneNumber" class="form-control form-control-lg" placeholder="Password" name="password" value="{{$val->password}}"/>
                         </div>
 
+                      </div> --}}
+                      <div class="col-md-6 mb-4 pb-2">
+
+                        <div class="form-outline">
+                          <label class="form-label" for="lastName">Manager Name</label>
+
+                          <select class="form-control form-control-lg" name="managerid">
+                              <option selected value="{{$val->Manager->id}}">{{$val->Manager->name}} - "{{$val->Manager->department_name}}"</option>
+                              @foreach ($manager as $data )
+                                  @if ($data->id != $val->Manager->id)
+                                      <option value="{{$data->id}}"> {{$data->name}} - "{{$data->department_name}}"</option>
+                                  @endif
+
+                              @endforeach
+
+                            </select>
+
+                        </div>
+
                       </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6 mb-4 pb-2">
+                        {{-- <div class="col-md-6 mb-4 pb-2">
 
                           <div class="form-outline">
                             <label class="form-label" for="lastName">Manager Name</label>
@@ -90,7 +109,7 @@
 
                           </div>
 
-                        </div>
+                        </div> --}}
 
                       </div>
                       @if ($errors->any())

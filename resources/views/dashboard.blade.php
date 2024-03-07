@@ -28,7 +28,7 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-        @if (session()->get('role') == 1)
+        @if (Auth::user()->role == 1)
 
                         <!-- Sidebar -->
                         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
@@ -52,41 +52,8 @@
                                     <a class="nav-link" href="{{ Route('dashboard')}}">
                                         <i class="fas fa-fw fa-tachometer-alt"></i>
                                         <span>Dashboard</span></a>
-                                </li>
-                                <li class="nav-item">
-                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                                    aria-expanded="true" aria-controls="collapseUtilities">
-                                    <i class="fas fa-fw fa-wrench"></i>
-                                    <span>Ticket</span>
-                                </a>
-                                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                                    data-parent="#accordionSidebar">
-                                    <div class="bg-white py-2 collapse-inner rounded">
-                                       
-                                        <a class="collapse-item" href="utilities-color.html">Colors</a>
-                                        <a class="collapse-item" href="utilities-border.html">Borders</a>
-                                        <a class="collapse-item" href="utilities-animation.html">Animations</a>
-                                        <a class="collapse-item" href="utilities-other.html">Other</a>
-                                    </div>
-                                </div>
-                            </li> 
-                            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                    aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Rules</span>
-                </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                    
-                        <a class="collapse-item" href="{{ route('rules.list') }}">List Of Rules</a>
-                        <a class="collapse-item" href="{{ route('rules.add') }}">Add Rules</a>
-                       
-                    </div>
-                </div>
-            </li> 
+                                    </li>
 
-                                
                             @else
                                 <li class="nav-item ">
                                     <a class="nav-link" href="{{ Route('dashboard')}}">
@@ -95,8 +62,41 @@
                                 </li>
                             @endif
 
+
                             <!-- Divider -->
                             <hr class="sidebar-divider">
+                            <li class="nav-item">
+                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                                    aria-expanded="true" aria-controls="collapseUtilities">
+                                    <i class="fas fa-fw fa-wrench"></i>
+                                    <span>Ticket</span>
+                                </a>
+                                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                                    data-parent="#accordionSidebar">
+                                    <div class="bg-white py-2 collapse-inner rounded">
+
+                                        <a class="collapse-item" href="utilities-color.html">Colors</a>
+                                        <a class="collapse-item" href="utilities-border.html">Borders</a>
+                                        <a class="collapse-item" href="utilities-animation.html">Animations</a>
+                                        <a class="collapse-item" href="utilities-other.html">Other</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+                                aria-expanded="true" aria-controls="collapsePages">
+                                <i class="fas fa-fw fa-folder"></i>
+                                <span>Rules</span>
+                            </a>
+                            <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                                <div class="bg-white py-2 collapse-inner rounded">
+
+                                    <a class="collapse-item" href="{{ route('rules.list') }}">List Of Rules</a>
+                                    <a class="collapse-item" href="{{ route('rules.add') }}">Add Rules</a>
+
+                                </div>
+                            </div>
+                         </li>
 
                             <!-- Heading -->
                             {{-- <div class="sidebar-heading">
@@ -374,7 +374,7 @@
                                         <li class="nav-item dropdown no-arrow">
                                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ session()->get('name')}}</span>
+                                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->firstname}}</span>
                                                 <img class="img-profile rounded-circle"
                                                     src="{{asset('admin/img/undraw_profile.svg')}}">
                                             </a>
@@ -427,7 +427,7 @@
                         </div>
                         <!-- End of Content Wrapper -->
 
-        @elseif (session()->get('role') == 2)
+        @elseif (Auth::user()->role == 2)
 
                         <!-- Sidebar -->
                         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
@@ -754,7 +754,7 @@
                                         <li class="nav-item dropdown no-arrow">
                                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ session()->get('name')}}</span>
+                                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{Auth::user()->firstname}}</span>
                                                 <img class="img-profile rounded-circle"
                                                     src="../admin/img/undraw_profile.svg">
                                             </a>
@@ -1117,7 +1117,7 @@
                                         <li class="nav-item dropdown no-arrow">
                                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ session()->get('name')}}</span>
+                                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->firstname}}</span>
                                                 <img class="img-profile rounded-circle"
                                                     src="../admin/img/undraw_profile.svg">
                                             </a>
@@ -1195,7 +1195,7 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="{{Route('logout')}}">Logout</a>
+                    <a class="btn btn-primary" href="{{Route('logoutinfo')}}">Logout</a>
                 </div>
             </div>
         </div>

@@ -40,7 +40,7 @@
                                 <th>Name</th>
                                 <th>Employee ID</th>
                                 <th>Email ID</th>
-                                <th>Password</th>
+                                {{-- <th>Password</th> --}}
                                 <th>Department</th>
                                 <th>Action</th>
 
@@ -54,7 +54,7 @@
                                 <td>{{$val->firstname}}</td>
                                 <td>{{$val->employee_id}}</td>
                                 <td>{{$val->email}}</td>
-                                <td>{{$val->password}}</td>
+                                {{-- <td>{{$val->password}}</td> --}}
                                 <td>{{$val->users_department}}</td>
                                 <td>
                                     <a class="btn btn-primary btn-md edit" style="background: #433185" href="#" data-id="{{$val->id}}">Edit</a>

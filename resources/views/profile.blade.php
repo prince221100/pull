@@ -26,6 +26,14 @@
                         </div>
 
                         </div>
+                          <div class="col-md-6 mb-4 pb-2">
+
+                        <div class="form-outline">
+                            <label class="form-label" for="emailAddress">Email</label>
+                            <input type="email" id="emailAddress" class="form-control form-control-lg" placeholder="Email Address" name="email" value="{{$val->email}}" disabled/>
+                        </div>
+
+                    </div>
 
                     </div>
 
@@ -49,22 +57,22 @@
                     </div>
 
                     <div class="row">
-                    <div class="col-md-6 mb-4 pb-2">
+                    {{-- <div class="col-md-6 mb-4 pb-2">
 
                         <div class="form-outline">
                             <label class="form-label" for="emailAddress">Email</label>
                             <input type="email" id="emailAddress" class="form-control form-control-lg" placeholder="Email Address" name="email" value="{{$val->email}}" disabled/>
                         </div>
 
-                    </div>
-                    <div class="col-md-6 mb-4 pb-2">
+                    </div> --}}
+                    {{-- <div class="col-md-6 mb-4 pb-2">
 
                         <div class="form-outline">
                             <label class="form-label" for="phoneNumber">Password</label>
                             <input type="text" id="phoneNumber" class="form-control form-control-lg" placeholder="Password" name="password" value="{{$val->password}}"/>
                         </div>
 
-                    </div>
+                    </div> --}}
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-4 pb-2">
@@ -94,7 +102,7 @@
 
                     <div class="mt-4 pt-2">
                     <input class="btn btn-primary btn-lg" style="background: #433185" type="submit" value="Submit" />
-                    <a class="btn btn-warning btn-lg"  href="{{ URL::previous() }}">Back</a>
+                    <a class="btn btn-warning btn-lg"  href="{{ Route('dashboard') }}">Back</a>
 
                     </div>
 

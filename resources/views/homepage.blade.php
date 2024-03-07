@@ -1,7 +1,7 @@
 @extends('dashboard')
 
 @section('content')
-    @if (session()->get('role') == 1)
+    @if (Auth::user()->role == 1)
         <div class="container-fluid">
 
             <!-- Page Heading -->
@@ -329,7 +329,7 @@
             </div>
 
         </div>
-    @elseif (session()->get('role') == 2)
+    @elseif (Auth::user()->role == 2)
         <div class="container-fluid">
 
             <!-- Page Heading -->
